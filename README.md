@@ -23,3 +23,18 @@ cpanm -l ~/github/mhj-api/local --installdeps .
 python3 -m http.server 8000 --cgi
 <http://localhost:8000/cgi-bin/index.cgi>
 ```
+
+## API
+
+### Resource types
+
+#### Build
+
+- method: init
+  - http: POST /mhj
+  - params:
+    - type: build
+    - method: init
+    - apikey: `string`
+  - description: データベース初期設定 `apikey` は管理者から取得
+  - cli: `mhj --type=build --method=init`

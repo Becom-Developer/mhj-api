@@ -2,11 +2,6 @@
 use strict;
 use warnings;
 use utf8;
-use CGI;
-
-# use FindBin;
-# use lib ( "$FindBin::RealBin/../lib/",
-#     "$FindBin::RealBin/../local/lib/perl5/" );
 my $html = <<"END_HTML";
 Content-Type: text/html; charset=utf-8
 
