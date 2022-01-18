@@ -31,10 +31,22 @@ python3 -m http.server 8000 --cgi
 #### Build
 
 - method: init
-  - http: POST /mhj
+  - http: POST /mhj.cgi
   - params:
     - type: build
     - method: init
     - apikey: `string`
   - description: データベース初期設定 `apikey` は管理者から取得
   - cli: `mhj --type=build --method=init`
+
+#### User
+
+- method: get
+  - http: POST /mhj.cgi
+  - params:
+    - type: user
+    - method: get
+    - userid: `string`
+    - apikey: `string`
+  - description: 登録ユーザーの情報を取得
+  - cli: `mhj --type=user --method=get --userid="info@becom.co.jp"`
