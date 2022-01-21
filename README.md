@@ -26,9 +26,18 @@ python3 -m http.server 8000 --cgi
 
 ## API
 
-### Resource types
+### Build
 
-#### Build
+#### init
+
+```zsh
+curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+--verbose \
+--request POST \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data-binary '{"type":"build","method":"init","apikey":"becom"}'
+```
 
 - method: init
   - http: POST /mhj.cgi
@@ -39,14 +48,46 @@ python3 -m http.server 8000 --cgi
   - description: データベース初期設定 `apikey` は管理者から取得
   - cli: `mhj --type=build --method=init`
 
-#### User
+### User
+
+#### get
+
+```zsh
+curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+--verbose \
+--request POST \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data-binary '{"type":"user","method":"get","loginid":"info@becom.co.jp","apikey":"becom"}'
+```
 
 - method: get
   - http: POST /mhj.cgi
   - params:
     - type: user
     - method: get
-    - userid: `string`
+    - loginid: `string`
     - apikey: `string`
   - description: 登録ユーザーの情報を取得
-  - cli: `mhj --type=user --method=get --userid="info@becom.co.jp"`
+  - cli: `mhj --type=user --method=get --loginid="info@becom.co.jp"`
+
+#### insert
+
+```zsh
+curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+--verbose \
+--request POST \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data-binary '{"type":"user","method":"insert","loginid":"info@becom.co.jp","password":"info","apikey":"becom"}'
+```
+
+- method: insert
+  - params:
+    - type: user
+    - method: insert
+    - userid: `string`
+    - password: `string`
+    - apikey: `string`
+- method: update
+- method: delete

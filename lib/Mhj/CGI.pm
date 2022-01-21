@@ -28,6 +28,10 @@ sub run {
         my $msg = $self->_build($params);
         return print encode_json $msg;
     }
+    if ( $params->{type} eq 'user' ) {
+        $self->_user($params);
+        return;
+    }
     return;
 }
 
@@ -46,6 +50,12 @@ sub _build {
     my ( $self, @args ) = @_;
     $self->build->run( shift @args );
     return +{ message => 'build success' };
+}
+
+sub _user {
+    my ( $self, @args ) = @_;
+    $self->user->run( shift @args );
+    return;
 }
 
 1;
