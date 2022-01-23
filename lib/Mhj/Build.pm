@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use File::Spec;
 use File::Path qw(make_path remove_tree);
+use JSON::PP;
 
 sub run {
     my ( $self, @args ) = @_;
@@ -29,6 +30,7 @@ sub _init {
     # 例: sqlite3 mhj.db < mhj.sql
     my $cmd = "sqlite3 $db < $sql";
     system $cmd and die "Couldn'n run: $cmd ($!)";
+    print encode_json +{ message => 'build success' };
     return;
 }
 

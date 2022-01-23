@@ -52,13 +52,21 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 
 #### get
 
+params
+
+```json
+{
+  "loginid": "info@becom.co.jp"
+}
+```
+
 ```zsh
 curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
 --header 'accept: application/json' \
---data-binary '{"type":"user","method":"get","loginid":"info@becom.co.jp","apikey":"becom"}'
+--data-binary '{"type":"user","method":"get","apikey":"becom","params":{}}'
 ```
 
 - method: get
@@ -69,9 +77,16 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
     - loginid: `string`
     - apikey: `string`
   - description: 登録ユーザーの情報を取得
-  - cli: `mhj --type=user --method=get --loginid="info@becom.co.jp"`
+  - cli: `mhj --type=user --method=get --params='{}'`
 
 #### insert
+
+```json
+{
+  "loginid": "info@becom.co.jp",
+  "password": "info"
+}
+```
 
 ```zsh
 curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
@@ -79,7 +94,7 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --request POST \
 --header 'Content-Type: application/json' \
 --header 'accept: application/json' \
---data-binary '{"type":"user","method":"insert","loginid":"info@becom.co.jp","password":"info","apikey":"becom"}'
+--data-binary '{"type":"user","method":"insert","apikey":"becom","params":{}}'
 ```
 
 - method: insert
@@ -89,5 +104,8 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
     - userid: `string`
     - password: `string`
     - apikey: `string`
+  - description: 登録ユーザーの新規作成
+  - cli: `mhj --type=user --method=insert --params='{}'`
+
 - method: update
 - method: delete

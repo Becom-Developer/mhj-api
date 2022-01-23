@@ -6,13 +6,18 @@ use utf8;
 use Encode qw(encode decode);
 use Data::Dumper;
 use Getopt::Long;
-my ( $type, $method, $userid ) = ( '', '', '' );
-GetOptions( "type=s" => \$type, "method=s" => \$method, "userid=s" => \$userid )
-  or die("Error in command line arguments\n");
+use JSON::PP;
+
+my ( $type, $method, $params ) = ( '', '', '{}' );
+GetOptions(
+    "type=s"   => \$type,
+    "method=s" => \$method,
+    "params=s" => \$params
+) or die("Error in command line arguments\n");
 my $options = +{
     type   => decode( 'UTF-8', $type ),
     method => decode( 'UTF-8', $method ),
-    userid => decode( 'UTF-8', $userid ),
+    params => decode_json $params,
 };
 sub hello { print "hello CLI-----\n"; }
 

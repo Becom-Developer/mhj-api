@@ -24,14 +24,9 @@ sub run {
       if !$params->{type} || !$params->{method} || !$params->{apikey};
     return print encode_json $self->_error_msg if $params->{apikey} ne $apikey;
 
-    if ( $params->{type} eq 'build' ) {
-        my $msg = $self->_build($params);
-        return print encode_json $msg;
-    }
-    if ( $params->{type} eq 'user' ) {
-        $self->_user($params);
-        return;
-    }
+    # ルーティング
+    return $self->build->run($params) if $params->{type} eq 'build';
+    return $self->user->run($params)  if $params->{type} eq 'user';
     return;
 }
 
@@ -44,18 +39,6 @@ sub _error_msg {
         }
     };
     return $error;
-}
-
-sub _build {
-    my ( $self, @args ) = @_;
-    $self->build->run( shift @args );
-    return +{ message => 'build success' };
-}
-
-sub _user {
-    my ( $self, @args ) = @_;
-    $self->user->run( shift @args );
-    return;
 }
 
 1;
