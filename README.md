@@ -26,9 +26,13 @@ python3 -m http.server 8000 --cgi
 
 ## API
 
-### Build
+`apikey` は管理者から取得
 
-#### init
+### Build init
+
+データベース初期設定
+
+HTTP
 
 ```zsh
 curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
@@ -39,26 +43,39 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --data-binary '{"type":"build","method":"init","apikey":"becom"}'
 ```
 
-- method: init
-  - http: POST /mhj.cgi
-  - params:
-    - type: build
-    - method: init
-    - apikey: `string`
-  - description: データベース初期設定 `apikey` は管理者から取得
-  - cli: `mhj --type=build --method=init`
+CLI
 
-### User
+```zsh
+mhj --type=build --method=init
+```
 
-#### get
+### User get
 
-params
+登録ユーザーの情報を取得
+
+Request parameters
 
 ```json
 {
   "loginid": "info@becom.co.jp"
 }
 ```
+
+Response parameters
+
+```json
+{
+  "id": 1,
+  "loginid": "info@becom.co.jp",
+  "password": "info",
+  "approved": 1,
+  "deleted": 0,
+  "created_ts": "2022-01-24 00:46:47",
+  "modified_ts": "2022-01-24 00:46:47"
+}
+```
+
+HTTP
 
 ```zsh
 curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
@@ -69,17 +86,17 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --data-binary '{"type":"user","method":"get","apikey":"becom","params":{}}'
 ```
 
-- method: get
-  - http: POST /mhj.cgi
-  - params:
-    - type: user
-    - method: get
-    - loginid: `string`
-    - apikey: `string`
-  - description: 登録ユーザーの情報を取得
-  - cli: `mhj --type=user --method=get --params='{}'`
+CLI
 
-#### insert
+```zsh
+mhj --type=user --method=get --params='{}'
+```
+
+### User insert
+
+登録ユーザーの新規作成
+
+Request parameters
 
 ```json
 {
@@ -87,6 +104,22 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
   "password": "info"
 }
 ```
+
+Response parameters
+
+```json
+{
+  "id": 1,
+  "loginid": "info@becom.co.jp",
+  "password": "info",
+  "approved": 1,
+  "deleted": 0,
+  "created_ts": "2022-01-24 00:46:47",
+  "modified_ts": "2022-01-24 00:46:47"
+}
+```
+
+HTTP
 
 ```zsh
 curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
@@ -97,15 +130,12 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --data-binary '{"type":"user","method":"insert","apikey":"becom","params":{}}'
 ```
 
-- method: insert
-  - params:
-    - type: user
-    - method: insert
-    - userid: `string`
-    - password: `string`
-    - apikey: `string`
-  - description: 登録ユーザーの新規作成
-  - cli: `mhj --type=user --method=insert --params='{}'`
+CLI
 
-- method: update
-- method: delete
+```zsh
+mhj --type=user --method=insert --params='{}'
+```
+
+### User update
+
+### User delete

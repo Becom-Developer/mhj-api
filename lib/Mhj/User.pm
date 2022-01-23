@@ -39,18 +39,34 @@ sub _check_loginid {
     return $dbh->selectrow_hashref($sql);
 }
 
+sub _get_id {
+    my ( $self, @args ) = @_;
+    my $id  = shift @args;
+    my $dbh = $self->_build_dbh;
+    my $sql = qq{SELECT * FROM user WHERE id = '$id' };
+    return $dbh->selectrow_hashref($sql);
+}
+
 sub _insert {
     my ( $self, @args ) = @_;
     my $options  = shift @args;
     my $params   = $options->{params};
     my $loginid  = $params->{loginid};
     my $password = $params->{password};
+    my $dt       = $self->time_stamp;
     my $row      = $self->_check_loginid($loginid);
     return print encode( 'UTF-8', "exist user: $loginid\n" ) if $row;
     my $dbh = $self->_build_dbh;
-    my $sql = qq{INSERT INTO user (loginid, password) VALUES (?, ?)};
-    my $sth = $dbh->prepare($sql);
-    $sth->execute( $loginid, $password ) or die $dbh->errstr;
+    my $col = q{loginid, password, approved, deleted, created_ts, modified_ts};
+    my $values = q{?, ?, ?, ?, ?, ?};
+    my @data   = ( $loginid, $password, 1, 0, $dt, $dt );
+    my $sql    = qq{INSERT INTO user ($col) VALUES ($values)};
+    my $sth    = $dbh->prepare($sql);
+    $sth->execute(@data) or die $dbh->errstr;
+    my $id     = $dbh->last_insert_id();
+    my $create = $self->_get_id($id);
+    print encode_json $create;
+    print "\n";
     return;
 }
 
