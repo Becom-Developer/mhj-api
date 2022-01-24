@@ -5,15 +5,10 @@ use utf8;
 use Time::Piece;
 use Mhj::Build;
 use Mhj::User;
-sub new   { return bless {}, shift; }
-sub build { Mhj::Build->new; }
-sub user  { Mhj::User->new; }
-
-sub time_stamp {
-    my $tp_obj     = localtime;
-    my $time_stamp = $tp_obj->datetime( 'T' => ' ' );
-    return $time_stamp;
-}
+sub new        { return bless {}, shift; }
+sub build      { Mhj::Build->new; }
+sub user       { Mhj::User->new; }
+sub time_stamp { return localtime->datetime( 'T' => ' ' ); }
 
 1;
 

@@ -31,19 +31,17 @@ sub _build_dbh {
     return $dbh;
 }
 
-sub _check_loginid {
-    my ( $self, @args ) = @_;
-    my $loginid = shift @args;
-    my $dbh     = $self->_build_dbh;
-    my $sql     = qq{SELECT * FROM user WHERE loginid = '$loginid' };
-    return $dbh->selectrow_hashref($sql);
-}
-
-sub _get_id {
-    my ( $self, @args ) = @_;
-    my $id  = shift @args;
-    my $dbh = $self->_build_dbh;
-    my $sql = qq{SELECT * FROM user WHERE id = '$id' };
+# $self->_single($table, \@cols, \%params);
+sub _single {
+    my ( $self, $table, $cols, $params ) = @_;
+    my $sql_q = [];
+    for my $col ( @{$cols} ) {
+        push @{$sql_q}, qq{$col = "$params->{$col}"};
+    }
+    push @{$sql_q}, qq{deleted = 0};
+    my $sql_clause = join " AND ", @{$sql_q};
+    my $sql        = qq{SELECT * FROM $table WHERE $sql_clause};
+    my $dbh        = $self->_build_dbh;
     return $dbh->selectrow_hashref($sql);
 }
 
@@ -54,7 +52,7 @@ sub _insert {
     my $loginid  = $params->{loginid};
     my $password = $params->{password};
     my $dt       = $self->time_stamp;
-    my $row      = $self->_check_loginid($loginid);
+    my $row      = $self->_single( 'user', ['loginid'], $params );
     return print encode( 'UTF-8', "exist user: $loginid\n" ) if $row;
     my $dbh = $self->_build_dbh;
     my $col = q{loginid, password, approved, deleted, created_ts, modified_ts};
@@ -64,7 +62,7 @@ sub _insert {
     my $sth    = $dbh->prepare($sql);
     $sth->execute(@data) or die $dbh->errstr;
     my $id     = $dbh->last_insert_id();
-    my $create = $self->_get_id($id);
+    my $create = $self->_single( 'user', ['id'], { id => $id } );
     print encode_json $create;
     print "\n";
     return;
@@ -75,7 +73,7 @@ sub _get {
     my $options = shift @args;
     my $params  = $options->{params};
     my $loginid = $params->{loginid};
-    my $row     = $self->_check_loginid($loginid);
+    my $row     = $self->_single( 'user', ['loginid'], $params );
     return print encode( 'UTF-8', "not exist user: $loginid\n" ) if !$row;
     print encode_json $row;
     print "\n";
