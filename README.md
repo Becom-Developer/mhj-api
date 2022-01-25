@@ -138,4 +138,36 @@ mhj --type=user --method=insert --params='{}'
 
 ### User update
 
+登録ユーザーの更新
+
+Request parameters
+
+```json
+{
+  "id": 1,
+  "loginid": "updateinfo@becom.co.jp",
+  "password": "updateinfo"
+}
+```
+
+Response parameters
+
+```json
+{
+  "id": 1,
+  "loginid": "updateinfo@becom.co.jp",
+  "password": "updateinfo",
+  "approved": 1,
+  "deleted": 0,
+  "created_ts": "2022-01-24 01:26:59",
+  "modified_ts": "2022-01-25 18:45:06"
+}
+```
+
+CLI
+
+```zsh
+mhj --type=user --method=update --params='{}'
+```
+
 ### User delete

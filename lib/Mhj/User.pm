@@ -15,6 +15,7 @@ sub run {
     my $options = shift @args;
     return $self->_get($options)    if $options->{method} eq 'get';
     return $self->_insert($options) if $options->{method} eq 'insert';
+    return $self->_update($options) if $options->{method} eq 'update';
     return print encode_json $self->_error_msg;
     return;
 }
@@ -43,6 +44,39 @@ sub _single {
     my $sql        = qq{SELECT * FROM $table WHERE $sql_clause};
     my $dbh        = $self->_build_dbh;
     return $dbh->selectrow_hashref($sql);
+}
+
+sub _update {
+    my ( $self, @args ) = @_;
+    my $options = shift @args;
+    my $params  = $options->{params};
+    my $dt      = $self->time_stamp;
+    my $row     = $self->_single( 'user', ['id'], $params );
+    return print encode( 'UTF-8', "not exist user: id\n" ) if !$row;
+    my $set_cols   = [ 'loginid', 'password' ];
+    my $where_cols = ['id'];
+    my $set_q      = [];
+
+    for my $col ( @{$set_cols} ) {
+        push @{$set_q}, qq{$col = "$params->{$col}"};
+    }
+    push @{$set_q}, qq{modified_ts = "$dt"};
+    my $set_clause = join ",", @{$set_q};
+
+    my $where_q = [];
+    for my $col ( @{$where_cols} ) {
+        push @{$where_q}, qq{$col = "$params->{$col}"};
+    }
+    push @{$where_q}, qq{deleted = 0};
+    my $where_clause = join " AND ", @{$where_q};
+    my $sql          = qq{UPDATE user SET $set_clause WHERE $where_clause};
+    my $dbh          = $self->_build_dbh;
+    my $sth          = $dbh->prepare($sql);
+    $sth->execute() or die $dbh->errstr;
+    my $update = $self->_single( 'user', ['id'], { id => $params->{id} } );
+    print encode_json $update;
+    print "\n";
+    return;
 }
 
 sub _insert {
