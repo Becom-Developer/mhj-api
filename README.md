@@ -40,13 +40,13 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --request POST \
 --header 'Content-Type: application/json' \
 --header 'accept: application/json' \
---data-binary '{"type":"build","method":"init","apikey":"becom"}'
+--data-binary '{"path":"build","method":"init","apikey":"becom"}'
 ```
 
 CLI
 
 ```zsh
-mhj --type=build --method=init
+mhj --path=build --method=init
 ```
 
 ### User get
@@ -83,13 +83,13 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --request POST \
 --header 'Content-Type: application/json' \
 --header 'accept: application/json' \
---data-binary '{"type":"user","method":"get","apikey":"becom","params":{}}'
+--data-binary '{"path":"user","method":"get","apikey":"becom","params":{}}'
 ```
 
 CLI
 
 ```zsh
-mhj --type=user --method=get --params='{}'
+mhj --path=user --method=get --params='{}'
 ```
 
 ### User insert
@@ -127,13 +127,13 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 --request POST \
 --header 'Content-Type: application/json' \
 --header 'accept: application/json' \
---data-binary '{"type":"user","method":"insert","apikey":"becom","params":{}}'
+--data-binary '{"path":"user","method":"insert","apikey":"becom","params":{}}'
 ```
 
 CLI
 
 ```zsh
-mhj --type=user --method=insert --params='{}'
+mhj --path=user --method=insert --params='{}'
 ```
 
 ### User update
@@ -164,10 +164,43 @@ Response parameters
 }
 ```
 
+HTTP
+
+```zsh
+curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+--verbose \
+--request POST \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data-binary '{"path":"user","method":"update","apikey":"becom","params":{}}'
+```
+
 CLI
 
 ```zsh
-mhj --type=user --method=update --params='{}'
+mhj --path=user --method=update --params='{}'
 ```
 
 ### User delete
+
+登録ユーザーの情報を削除
+
+Request parameters
+
+```json
+{
+  "id": 1
+}
+```
+
+Response parameters
+
+```json
+{}
+```
+
+CLI
+
+```zsh
+mhj --path=user --method=delete --params='{}'
+```
