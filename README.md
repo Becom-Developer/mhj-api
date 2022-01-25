@@ -199,6 +199,17 @@ Response parameters
 {}
 ```
 
+HTTP
+
+```zsh
+curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+--verbose \
+--request POST \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data-binary '{"path":"user","method":"delete","apikey":"becom","params":{}}'
+```
+
 CLI
 
 ```zsh
