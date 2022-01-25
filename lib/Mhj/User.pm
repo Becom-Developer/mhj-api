@@ -114,7 +114,7 @@ sub _insert {
     my $sql    = qq{INSERT INTO user ($col) VALUES ($values)};
     my $sth    = $dbh->prepare($sql);
     $sth->execute(@data) or die $dbh->errstr;
-    my $id     = $dbh->last_insert_id();
+    my $id     = $dbh->last_insert_id( undef, undef, undef, undef );
     my $create = $self->_single( 'user', ['id'], { id => $id } );
     print encode_json $create;
     print "\n";
