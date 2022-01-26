@@ -20,7 +20,8 @@ sub run {
     # Resource types
     my $q      = CGI->new;
     my $params = decode_json $q->param('POSTDATA');
-    my $origin = $origin_list->{ $params->{apikey} };
+    # my $origin = $origin_list->{ $params->{apikey} };
+    my $origin = 'http://localhost:3000';
     print $q->header(
         -type                             => 'application/json',
         -charset                          => 'utf-8',
