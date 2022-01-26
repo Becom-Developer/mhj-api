@@ -25,10 +25,18 @@ sub run {
     my ( $self, @args ) = @_;
 
     # 初期設定 / データベース設定更新 build
-    return $self->build->run($options) if $options->{path} eq 'build';
+    if ( $options->{path} eq 'build' ) {
+        print encode_json $self->build->run($options);
+        print "\n";
+        return;
+    }
 
     # 登録ユーザー
-    return $self->user->run($options) if $options->{path} eq 'user';
+    if ( $options->{path} eq 'user' ) {
+        print encode_json $self->user->run($options);
+        print "\n";
+        return;
+    }
 
     # 検索 search
     # 追加、更新
