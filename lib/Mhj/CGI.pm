@@ -10,6 +10,7 @@ use JSON::PP;
 
 sub run {
     my ( $self, @args ) = @_;
+    warn Dumper( \%ENV );
 
     # オリジンの表
     my $origin_list = +{
@@ -18,13 +19,15 @@ sub run {
     };
 
     # Resource types
-    my $q      = CGI->new;
+    my $q = CGI->new;
+
     # my $params = decode_json $q->param('POSTDATA');
     # my $origin = $origin_list->{ $params->{apikey} };
     my $origin = 'http://localhost:3000';
     print $q->header(
-        -type                             => 'application/json',
-        -charset                          => 'utf-8',
+        -type    => 'application/json',
+        -charset => 'utf-8',
+
         # -access_control_allow_origin      => 'http://localhost:3000',
         -access_control_allow_origin      => $origin,
         -access_control_allow_headers     => 'content-type,X-Requested-With',
@@ -32,10 +35,14 @@ sub run {
         -access_control_allow_credentials => 'true',
     );
     my $params = decode_json $q->param('POSTDATA');
+    for my $key ( keys %ENV ) {
+        print "$key --> $ENV{$key}\n";
+    }
 
     # エラー判定
     return print encode_json $self->_error_msg
       if !$params->{path} || !$params->{method} || !$params->{apikey};
+
     # return print encode_json $self->_error_msg if !$origin;
 
     # ルーティング
