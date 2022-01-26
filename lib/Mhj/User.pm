@@ -7,8 +7,6 @@ use DBI;
 use File::Spec;
 use FindBin;
 use Data::Dumper;
-use JSON::PP;
-use Encode qw(encode decode);
 
 sub run {
     my ( $self, @args ) = @_;
@@ -17,7 +15,7 @@ sub run {
     return $self->_insert($options) if $options->{method} eq 'insert';
     return $self->_update($options) if $options->{method} eq 'update';
     return $self->_delete($options) if $options->{method} eq 'delete';
-    return print encode_json $self->_error_msg;
+    return $self->_error_msg;
     return;
 }
 
@@ -54,15 +52,13 @@ sub _delete {
     my $id      = $params->{id};
     my $dt      = $self->time_stamp;
     my $row     = $self->_single( 'user', ['id'], $params );
-    return print encode( 'UTF-8', "not exist user: id\n" ) if !$row;
+    return { error => "not exist user: id"}  if !$row;
     my $set_clause = qq{deleted = 1,modified_ts = "$dt"};
     my $sql        = qq{UPDATE user SET $set_clause WHERE id = $id};
     my $dbh        = $self->_build_dbh;
     my $sth        = $dbh->prepare($sql);
     $sth->execute() or die $dbh->errstr;
-    print encode_json {};
-    print "\n";
-    return;
+    return {};
 }
 
 sub _update {
@@ -71,7 +67,7 @@ sub _update {
     my $params  = $options->{params};
     my $dt      = $self->time_stamp;
     my $row     = $self->_single( 'user', ['id'], $params );
-    return print encode( 'UTF-8', "not exist user: id\n" ) if !$row;
+    return { error => "not exist user: id"}  if !$row;
     my $set_cols   = [ 'loginid', 'password' ];
     my $where_cols = ['id'];
     my $set_q      = [];
@@ -93,9 +89,7 @@ sub _update {
     my $sth          = $dbh->prepare($sql);
     $sth->execute() or die $dbh->errstr;
     my $update = $self->_single( 'user', ['id'], { id => $params->{id} } );
-    print encode_json $update;
-    print "\n";
-    return;
+    return $update;
 }
 
 sub _insert {
@@ -106,7 +100,7 @@ sub _insert {
     my $password = $params->{password};
     my $dt       = $self->time_stamp;
     my $row      = $self->_single( 'user', ['loginid'], $params );
-    return print encode( 'UTF-8', "exist user: $loginid\n" ) if $row;
+    return { error => "exist user: $loginid" } if $row;
     my $dbh = $self->_build_dbh;
     my $col = q{loginid, password, approved, deleted, created_ts, modified_ts};
     my $values = q{?, ?, ?, ?, ?, ?};
@@ -116,9 +110,7 @@ sub _insert {
     $sth->execute(@data) or die $dbh->errstr;
     my $id     = $dbh->last_insert_id( undef, undef, undef, undef );
     my $create = $self->_single( 'user', ['id'], { id => $id } );
-    print encode_json $create;
-    print "\n";
-    return;
+    return $create;
 }
 
 sub _get {
@@ -127,10 +119,8 @@ sub _get {
     my $params  = $options->{params};
     my $loginid = $params->{loginid};
     my $row     = $self->_single( 'user', ['loginid'], $params );
-    return print encode( 'UTF-8', "not exist user: $loginid\n" ) if !$row;
-    print encode_json $row;
-    print "\n";
-    return;
+    return { error => "not exist user: $loginid" } if !$row;
+    return $row;
 }
 
 sub _error_msg {
