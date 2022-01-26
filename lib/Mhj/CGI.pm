@@ -21,11 +21,12 @@ sub run {
     my $q      = CGI->new;
     # my $params = decode_json $q->param('POSTDATA');
     # my $origin = $origin_list->{ $params->{apikey} };
-    # my $origin = 'http://localhost:3000';
+    my $origin = 'http://localhost:3000';
     print $q->header(
         -type                             => 'application/json',
         -charset                          => 'utf-8',
-        -access_control_allow_origin      => 'http://localhost:3000',
+        # -access_control_allow_origin      => 'http://localhost:3000',
+        -access_control_allow_origin      => $origin,
         -access_control_allow_headers     => 'content-type,X-Requested-With',
         -access_control_allow_methods     => 'GET,POST,OPTIONS',
         -access_control_allow_credentials => 'true',
