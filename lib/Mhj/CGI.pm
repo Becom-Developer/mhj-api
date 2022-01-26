@@ -17,6 +17,12 @@ sub run {
     # Resource types
     my $q = CGI->new;
     print $q->header( -type => 'application/json', -charset => 'utf-8' );
+    print $q->header(
+        -access_control_allow_origin  => 'http://localhost:3000',
+        -access_control_allow_headers =>
+          'Origin, X-Requested-With, Content-Type, Accept',
+    );
+    warn Dumper($q);
     my $params = decode_json $q->param('POSTDATA');
 
     # エラー判定

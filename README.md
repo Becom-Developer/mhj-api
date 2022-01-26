@@ -16,7 +16,8 @@ plenv install 5.14.4
 plenv rehash
 plenv install-cpanm
 cpanm Perl::Tidy
-
+cpanm Plack
+cpanm Task::Plack
 cpanm -l ~/github/mhj-api/local --installdeps .
 
 ローカル環境でwebサーバー経由で起動
