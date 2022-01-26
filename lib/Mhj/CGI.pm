@@ -19,22 +19,23 @@ sub run {
 
     # Resource types
     my $q      = CGI->new;
-    my $params = decode_json $q->param('POSTDATA');
+    # my $params = decode_json $q->param('POSTDATA');
     # my $origin = $origin_list->{ $params->{apikey} };
-    my $origin = 'http://localhost:3000';
+    # my $origin = 'http://localhost:3000';
     print $q->header(
         -type                             => 'application/json',
         -charset                          => 'utf-8',
-        -access_control_allow_origin      => $origin || '*',
+        -access_control_allow_origin      => 'http://localhost:3000',
         -access_control_allow_headers     => 'content-type,X-Requested-With',
         -access_control_allow_methods     => 'GET,POST,OPTIONS',
         -access_control_allow_credentials => 'true',
     );
+    my $params = decode_json $q->param('POSTDATA');
 
     # エラー判定
     return print encode_json $self->_error_msg
       if !$params->{path} || !$params->{method} || !$params->{apikey};
-    return print encode_json $self->_error_msg if !$origin;
+    # return print encode_json $self->_error_msg if !$origin;
 
     # ルーティング
     return $self->build->run($params) if $params->{path} eq 'build';
