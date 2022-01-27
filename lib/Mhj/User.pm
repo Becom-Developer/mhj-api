@@ -15,8 +15,8 @@ sub run {
     return $self->_insert($options) if $options->{method} eq 'insert';
     return $self->_update($options) if $options->{method} eq 'update';
     return $self->_delete($options) if $options->{method} eq 'delete';
-    return $self->_error_msg;
-    return;
+    return $self->error->commit(
+        "Method not specified correctly: $options->{method}");
 }
 
 sub _build_dbh {
@@ -52,7 +52,7 @@ sub _delete {
     my $id      = $params->{id};
     my $dt      = $self->time_stamp;
     my $row     = $self->_single( 'user', ['id'], $params );
-    return { error => "not exist user: id"}  if !$row;
+    return $self->error->commit("not exist user id: $id") if !$row;
     my $set_clause = qq{deleted = 1,modified_ts = "$dt"};
     my $sql        = qq{UPDATE user SET $set_clause WHERE id = $id};
     my $dbh        = $self->_build_dbh;
@@ -67,7 +67,7 @@ sub _update {
     my $params  = $options->{params};
     my $dt      = $self->time_stamp;
     my $row     = $self->_single( 'user', ['id'], $params );
-    return { error => "not exist user: id"}  if !$row;
+    return $self->error->commit("not exist user id: $params->{id}") if !$row;
     my $set_cols   = [ 'loginid', 'password' ];
     my $where_cols = ['id'];
     my $set_q      = [];
@@ -100,7 +100,7 @@ sub _insert {
     my $password = $params->{password};
     my $dt       = $self->time_stamp;
     my $row      = $self->_single( 'user', ['loginid'], $params );
-    return { error => "exist user: $loginid" } if $row;
+    return $self->error->commit("exist user: $loginid") if $row;
     my $dbh = $self->_build_dbh;
     my $col = q{loginid, password, approved, deleted, created_ts, modified_ts};
     my $values = q{?, ?, ?, ?, ?, ?};
@@ -119,19 +119,8 @@ sub _get {
     my $params  = $options->{params};
     my $loginid = $params->{loginid};
     my $row     = $self->_single( 'user', ['loginid'], $params );
-    return { error => "not exist user: $loginid" } if !$row;
+    return $self->error->commit("not exist user: $loginid") if !$row;
     return $row;
-}
-
-sub _error_msg {
-    my ( $self, @args ) = @_;
-    my $error = +{
-        error => +{
-            code    => 400,
-            message => 'error msg',
-        }
-    };
-    return $error;
 }
 
 1;

@@ -12,7 +12,8 @@ sub run {
 
     # 初期設定時のdbファイル準備
     return $self->_init if $options->{method} eq 'init';
-    return;
+    return $self->error->commit(
+        "Method not specified correctly: $options->{method}");
 }
 
 sub _init {

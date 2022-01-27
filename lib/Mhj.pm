@@ -5,9 +5,11 @@ use utf8;
 use Time::Piece;
 use Mhj::Build;
 use Mhj::User;
+use Mhj::Error;
 sub new        { return bless {}, shift; }
 sub build      { Mhj::Build->new; }
 sub user       { Mhj::User->new; }
+sub error      { Mhj::Error->new; }
 sub time_stamp { return localtime->datetime( 'T' => ' ' ); }
 
 1;
