@@ -40,7 +40,8 @@ sub run {
 
     # 検索 search
     # 追加、更新
-    return;
+    return $self->error->output(
+        "The path is specified incorrectly: $options->{path}");
 }
 
 1;

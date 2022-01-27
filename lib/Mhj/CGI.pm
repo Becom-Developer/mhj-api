@@ -30,9 +30,11 @@ sub run {
     }
 
     # エラー判定
-    return print encode_json $self->_error_msg
+    return $self->error->output(
+        "Unknown option specification: path & method & apikey")
       if !$params->{path} || !$params->{method} || !$params->{apikey};
-    return print encode_json $self->_error_msg if $apikey ne $params->{apikey};
+    return $self->error->output("apikey is incorrect: $params->{apikey}")
+      if $apikey ne $params->{apikey};
 
     # ルーティング
     if ( $params->{path} eq 'build' ) {
@@ -45,27 +47,10 @@ sub run {
         print "\n";
         return;
     }
-    return;
-}
-
-sub _error_msg {
-    my ( $self, @args ) = @_;
-    my $error = +{
-        error => +{
-            code    => 400,
-            message => 'error msg',
-        }
-    };
-    return $error;
+    return $self->error->output(
+        "The path is specified incorrectly: $params->{path}");
 }
 
 1;
 
 __END__
-
-{
-  "error": {
-    "code": 403, http ステータス
-    "message": "The app with id {appId} " エラーメッセージ
-  }
-}
