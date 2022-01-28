@@ -37,26 +37,31 @@ sub run {
     # Resource types
     my $q = CGI->new;
 
-
-    # print $q->header(
-    #     -type                             => 'application/json',
-    #     -charset                          => 'utf-8',
-    # );
-
-
-    # warn Dumper($q);
     my $origin = $ENV{HTTP_ORIGIN};
-    print $q->header(
-        -type                             => 'application/json',
-        -charset                          => 'utf-8',
-        -access_control_allow_origin      => $origin,
-        -access_control_allow_headers     => 'content-type,X-Requested-With',
-        -access_control_allow_methods     => 'GET,POST,OPTIONS',
-        -access_control_allow_credentials => 'true',
+
+    # my $origin = "http://localhost:3000";
+
+    my $access_control_allow = +{};
+    my @headers              = (
+        -type    => 'application/json',
+        -charset => 'utf-8',
     );
+    if ($origin) {
+        @headers = (
+            @headers,
+            -access_control_allow_origin  => $origin,
+            -access_control_allow_headers => 'content-type,X-Requested-With',
+            -access_control_allow_methods => 'GET,POST,OPTIONS',
+            -access_control_allow_credentials => 'true',
+        );
+    }
+
+    print $q->header(@headers);
+
     # warn '-------1';
     print "hello-----";
     print "$origin";
+
     # my $params   = {};
     # my $postdata = $q->param('POSTDATA');
     # if ($postdata) {
