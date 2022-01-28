@@ -8,41 +8,14 @@ use Data::Dumper;
 use CGI;
 use JSON::PP;
 
-sub hello {
-    my $html = <<"END_HTML";
-Content-Type: text/html; charset=utf-8
-
-<!DOCTYPE html>
-<html lang="ja">
-
-<head>
-  <meta charset="UTF-8">
-  <title>hello</title>
-</head>
-
-<body>
-    <h1>hello</h1>
-</body>
-
-</html>
-END_HTML
-
-    print $html;
-}
-
 sub run {
     my ( $self, @args ) = @_;
     my $apikey = 'becom';
 
     # Resource types
-    my $q = CGI->new;
-
-    my $origin = $ENV{HTTP_ORIGIN};
-
-    # my $origin = "http://localhost:3000";
-
-    my $access_control_allow = +{};
-    my @headers              = (
+    my $q       = CGI->new;
+    my $origin  = $ENV{HTTP_ORIGIN};
+    my @headers = (
         -type    => 'application/json',
         -charset => 'utf-8',
     );
@@ -55,43 +28,33 @@ sub run {
             -access_control_allow_credentials => 'true',
         );
     }
-
     print $q->header(@headers);
+    my $params   = {};
+    my $postdata = $q->param('POSTDATA');
+    if ($postdata) {
+        $params = decode_json $postdata;
+    }
 
-    # warn '-------1';
-    print "hello-----";
-    print "$origin";
+    # エラー判定
+    return $self->error->output(
+        "Unknown option specification: path & method & apikey")
+      if !$params->{path} || !$params->{method} || !$params->{apikey};
+    return $self->error->output("apikey is incorrect: $params->{apikey}")
+      if $apikey ne $params->{apikey};
 
-    # my $params   = {};
-    # my $postdata = $q->param('POSTDATA');
-    # if ($postdata) {
-    #     warn '-------2';
-    #     $params = decode_json $postdata;
-    # }
-    # warn '-------3';
-    # warn Dumper($params);
-    # warn Dumper($postdata);
-    # # エラー判定
-    # return $self->error->output(
-    #     "Unknown option specification: path & method & apikey")
-    #   if !$params->{path} || !$params->{method} || !$params->{apikey};
-    # return $self->error->output("apikey is incorrect: $params->{apikey}")
-    #   if $apikey ne $params->{apikey};
-
-    # # ルーティング
-    # if ( $params->{path} eq 'build' ) {
-    #     print encode_json $self->build->run($params);
-    #     print "\n";
-    #     return;
-    # }
-    # if ( $params->{path} eq 'user' ) {
-    #     print encode_json $self->user->run($params);
-    #     print "\n";
-    #     return;
-    # }
-    # return $self->error->output(
-    #     "The path is specified incorrectly: $params->{path}");
-    return;
+    # ルーティング
+    if ( $params->{path} eq 'build' ) {
+        print encode_json $self->build->run($params);
+        print "\n";
+        return;
+    }
+    if ( $params->{path} eq 'user' ) {
+        print encode_json $self->user->run($params);
+        print "\n";
+        return;
+    }
+    return $self->error->output(
+        "The path is specified incorrectly: $params->{path}");
 }
 
 1;
