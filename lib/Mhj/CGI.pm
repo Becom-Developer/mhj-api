@@ -38,22 +38,22 @@ sub run {
     my $q = CGI->new;
 
 
-    print $q->header(
-        -type                             => 'application/json',
-        -charset                          => 'utf-8',
-    );
+    # print $q->header(
+    #     -type                             => 'application/json',
+    #     -charset                          => 'utf-8',
+    # );
 
 
     # warn Dumper($q);
     my $origin = $ENV{HTTP_ORIGIN};
-    # print $q->header(
-    #     -type                             => 'application/json',
-    #     -charset                          => 'utf-8',
-    #     -access_control_allow_origin      => $origin,
-    #     -access_control_allow_headers     => 'content-type,X-Requested-With',
-    #     -access_control_allow_methods     => 'GET,POST,OPTIONS',
-    #     -access_control_allow_credentials => 'true',
-    # );
+    print $q->header(
+        -type                             => 'application/json',
+        -charset                          => 'utf-8',
+        -access_control_allow_origin      => $origin,
+        -access_control_allow_headers     => 'content-type,X-Requested-With',
+        -access_control_allow_methods     => 'GET,POST,OPTIONS',
+        -access_control_allow_credentials => 'true',
+    );
     # warn '-------1';
     print "hello-----";
     print "$origin";
