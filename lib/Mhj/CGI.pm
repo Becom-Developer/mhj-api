@@ -45,7 +45,7 @@ sub run {
 
 
     # warn Dumper($q);
-    # my $origin = $ENV{HTTP_ORIGIN};
+    my $origin = $ENV{HTTP_ORIGIN};
     # print $q->header(
     #     -type                             => 'application/json',
     #     -charset                          => 'utf-8',
@@ -56,6 +56,7 @@ sub run {
     # );
     # warn '-------1';
     print "hello-----";
+    print "$origin";
     # my $params   = {};
     # my $postdata = $q->param('POSTDATA');
     # if ($postdata) {
