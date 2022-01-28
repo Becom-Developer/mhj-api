@@ -55,7 +55,7 @@ sub run {
     #     -access_control_allow_credentials => 'true',
     # );
     # warn '-------1';
-
+    print "hello-----";
     # my $params   = {};
     # my $postdata = $q->param('POSTDATA');
     # if ($postdata) {
