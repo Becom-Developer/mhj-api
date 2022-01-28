@@ -102,7 +102,11 @@ sub _list {
     my $id      = $params->{period_type_id};
     my $row     = $self->single( 'period_type', ['id'], { id => $id } );
     return $self->error->commit("not exist period_type: $id") if !$row;
-    return $row;
+    my $rows = $self->rows( 'period', ['period_type_id'], $params );
+    return +{
+        period_type => $row,
+        period      => $rows,
+    };
 }
 
 1;
