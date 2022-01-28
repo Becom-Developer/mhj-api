@@ -14,6 +14,7 @@ sub run {
 
     # Resource types
     my $q      = CGI->new;
+    warn Dumper($q);
     my $origin = $ENV{HTTP_ORIGIN};
     print $q->header(
         -type                             => 'application/json',
@@ -23,12 +24,16 @@ sub run {
         -access_control_allow_methods     => 'GET,POST,OPTIONS',
         -access_control_allow_credentials => 'true',
     );
+    warn '-------1';
     my $params   = {};
     my $postdata = $q->param('POSTDATA');
     if ($postdata) {
+        warn '-------2';
         $params = decode_json $postdata;
     }
-
+    warn '-------3';
+    warn Dumper($params);
+    warn Dumper($postdata);
     # エラー判定
     return $self->error->output(
         "Unknown option specification: path & method & apikey")
