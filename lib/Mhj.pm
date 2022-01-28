@@ -45,6 +45,7 @@ sub single {
     return $dbh->selectrow_hashref($sql);
 }
 
+# $self->rows($table, \@cols, \%params);
 sub rows {
     my ( $self, $table, $cols, $params ) = @_;
     my $sql_q = [];

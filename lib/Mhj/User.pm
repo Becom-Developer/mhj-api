@@ -3,9 +3,6 @@ use parent 'Mhj';
 use strict;
 use warnings;
 use utf8;
-use DBI;
-use File::Spec;
-use FindBin;
 use Data::Dumper;
 
 sub run {
@@ -19,43 +16,18 @@ sub run {
         "Method not specified correctly: $options->{method}");
 }
 
-sub _build_dbh {
-    my ( $self, @args ) = @_;
-    my $db   = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', 'mhj.db' );
-    my $attr = +{
-        RaiseError     => 1,
-        AutoCommit     => 1,
-        sqlite_unicode => 1,
-    };
-    my $dbh = DBI->connect( "dbi:SQLite:dbname=$db", "", "", $attr );
-    return $dbh;
-}
-
-# $self->_single($table, \@cols, \%params);
-sub _single {
-    my ( $self, $table, $cols, $params ) = @_;
-    my $sql_q = [];
-    for my $col ( @{$cols} ) {
-        push @{$sql_q}, qq{$col = "$params->{$col}"};
-    }
-    push @{$sql_q}, qq{deleted = 0};
-    my $sql_clause = join " AND ", @{$sql_q};
-    my $sql        = qq{SELECT * FROM $table WHERE $sql_clause};
-    my $dbh        = $self->_build_dbh;
-    return $dbh->selectrow_hashref($sql);
-}
-
 sub _delete {
     my ( $self, @args ) = @_;
     my $options = shift @args;
     my $params  = $options->{params};
     my $id      = $params->{id};
     my $dt      = $self->time_stamp;
-    my $row     = $self->_single( 'user', ['id'], $params );
-    return $self->error->commit("not exist user id: $id") if !$row;
+    my $table   = 'user';
+    my $row     = $self->single( $table, ['id'], $params );
+    return $self->error->commit("not exist $table id: $id") if !$row;
     my $set_clause = qq{deleted = 1,modified_ts = "$dt"};
-    my $sql        = qq{UPDATE user SET $set_clause WHERE id = $id};
-    my $dbh        = $self->_build_dbh;
+    my $sql        = qq{UPDATE $table SET $set_clause WHERE id = $id};
+    my $dbh        = $self->build_dbh;
     my $sth        = $dbh->prepare($sql);
     $sth->execute() or die $dbh->errstr;
     return {};
@@ -65,9 +37,10 @@ sub _update {
     my ( $self, @args ) = @_;
     my $options = shift @args;
     my $params  = $options->{params};
+    my $table   = 'user';
     my $dt      = $self->time_stamp;
-    my $row     = $self->_single( 'user', ['id'], $params );
-    return $self->error->commit("not exist user id: $params->{id}") if !$row;
+    my $row     = $self->single( $table, ['id'], $params );
+    return $self->error->commit("not exist $table id: $params->{id}") if !$row;
     my $set_cols   = [ 'loginid', 'password' ];
     my $where_cols = ['id'];
     my $set_q      = [];
@@ -84,11 +57,11 @@ sub _update {
     }
     push @{$where_q}, qq{deleted = 0};
     my $where_clause = join " AND ", @{$where_q};
-    my $sql          = qq{UPDATE user SET $set_clause WHERE $where_clause};
-    my $dbh          = $self->_build_dbh;
+    my $sql          = qq{UPDATE $table SET $set_clause WHERE $where_clause};
+    my $dbh          = $self->build_dbh;
     my $sth          = $dbh->prepare($sql);
     $sth->execute() or die $dbh->errstr;
-    my $update = $self->_single( 'user', ['id'], { id => $params->{id} } );
+    my $update = $self->single( $table, ['id'], { id => $params->{id} } );
     return $update;
 }
 
@@ -96,20 +69,21 @@ sub _insert {
     my ( $self, @args ) = @_;
     my $options  = shift @args;
     my $params   = $options->{params};
+    my $table    = 'user';
     my $loginid  = $params->{loginid};
     my $password = $params->{password};
     my $dt       = $self->time_stamp;
-    my $row      = $self->_single( 'user', ['loginid'], $params );
-    return $self->error->commit("exist user: $loginid") if $row;
-    my $dbh = $self->_build_dbh;
+    my $row      = $self->single( $table, ['loginid'], $params );
+    return $self->error->commit("exist $table: $loginid") if $row;
+    my $dbh = $self->build_dbh;
     my $col = q{loginid, password, approved, deleted, created_ts, modified_ts};
     my $values = q{?, ?, ?, ?, ?, ?};
     my @data   = ( $loginid, $password, 1, 0, $dt, $dt );
-    my $sql    = qq{INSERT INTO user ($col) VALUES ($values)};
+    my $sql    = qq{INSERT INTO $table ($col) VALUES ($values)};
     my $sth    = $dbh->prepare($sql);
     $sth->execute(@data) or die $dbh->errstr;
     my $id     = $dbh->last_insert_id( undef, undef, undef, undef );
-    my $create = $self->_single( 'user', ['id'], { id => $id } );
+    my $create = $self->single( $table, ['id'], { id => $id } );
     return $create;
 }
 
@@ -117,8 +91,9 @@ sub _get {
     my ( $self, @args ) = @_;
     my $options = shift @args;
     my $params  = $options->{params};
+    my $table   = 'user';
     my $loginid = $params->{loginid};
-    my $row     = $self->_single( 'user', ['loginid'], $params );
+    my $row     = $self->single( $table, ['loginid'], $params );
     return $self->error->commit("not exist user: $loginid") if !$row;
     return $row;
 }
