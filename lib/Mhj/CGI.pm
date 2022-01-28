@@ -25,35 +25,36 @@ sub run {
         -access_control_allow_credentials => 'true',
     );
     warn '-------1';
-    my $params   = {};
-    my $postdata = $q->param('POSTDATA');
-    if ($postdata) {
-        warn '-------2';
-        $params = decode_json $postdata;
-    }
-    warn '-------3';
-    warn Dumper($params);
-    warn Dumper($postdata);
-    # エラー判定
-    return $self->error->output(
-        "Unknown option specification: path & method & apikey")
-      if !$params->{path} || !$params->{method} || !$params->{apikey};
-    return $self->error->output("apikey is incorrect: $params->{apikey}")
-      if $apikey ne $params->{apikey};
+    # my $params   = {};
+    # my $postdata = $q->param('POSTDATA');
+    # if ($postdata) {
+    #     warn '-------2';
+    #     $params = decode_json $postdata;
+    # }
+    # warn '-------3';
+    # warn Dumper($params);
+    # warn Dumper($postdata);
+    # # エラー判定
+    # return $self->error->output(
+    #     "Unknown option specification: path & method & apikey")
+    #   if !$params->{path} || !$params->{method} || !$params->{apikey};
+    # return $self->error->output("apikey is incorrect: $params->{apikey}")
+    #   if $apikey ne $params->{apikey};
 
-    # ルーティング
-    if ( $params->{path} eq 'build' ) {
-        print encode_json $self->build->run($params);
-        print "\n";
-        return;
-    }
-    if ( $params->{path} eq 'user' ) {
-        print encode_json $self->user->run($params);
-        print "\n";
-        return;
-    }
-    return $self->error->output(
-        "The path is specified incorrectly: $params->{path}");
+    # # ルーティング
+    # if ( $params->{path} eq 'build' ) {
+    #     print encode_json $self->build->run($params);
+    #     print "\n";
+    #     return;
+    # }
+    # if ( $params->{path} eq 'user' ) {
+    #     print encode_json $self->user->run($params);
+    #     print "\n";
+    #     return;
+    # }
+    # return $self->error->output(
+    #     "The path is specified incorrectly: $params->{path}");
+    return;
 }
 
 1;
