@@ -17,19 +17,19 @@ sub run {
 }
 
 sub _init {
-    # my ( $self, @args ) = @_;
-    # my $db_dir = File::Spec->catfile( "$FindBin::RealBin", '..', 'db' );
-    # my $db  = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', 'mhj.db' );
-    # my $sql = File::Spec->catfile( "$FindBin::RealBin", '..', 'mhj.sql' );
-    # die "not file: $!: $sql" if !-e $sql;
+    my ( $self, @args ) = @_;
+    my $db_dir = File::Spec->catfile( "$FindBin::RealBin", '..', 'db' );
+    my $db  = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', 'mhj.db' );
+    my $sql = File::Spec->catfile( "$FindBin::RealBin", '..', 'mhj.sql' );
+    die "not file: $!: $sql" if !-e $sql;
 
-    # if ( !-e $db_dir ) {
-    #     make_path($db_dir);
-    # }
+    if ( !-e $db_dir ) {
+        make_path($db_dir);
+    }
 
-    # # 例: sqlite3 mhj.db < mhj.sql
-    # my $cmd = "sqlite3 $db < $sql";
-    # system $cmd and die "Couldn'n run: $cmd ($!)";
+    # 例: sqlite3 mhj.db < mhj.sql
+    my $cmd = "sqlite3 $db < $sql";
+    system $cmd and die "Couldn'n run: $cmd ($!)";
     return +{ message => 'build success' };
 }
 

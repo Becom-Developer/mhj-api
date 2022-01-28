@@ -53,6 +53,16 @@ sub run {
         print "\n";
         return;
     }
+    if ( $params->{path} eq 'period' ) {
+        print encode_json $self->period->run($params);
+        print "\n";
+        return;
+    }
+    if ( $params->{path} eq 'periodtype' ) {
+        print encode_json $self->periodtype->run($params);
+        print "\n";
+        return;
+    }
     return $self->error->output(
         "The path is specified incorrectly: $params->{path}");
 }

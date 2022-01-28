@@ -38,6 +38,18 @@ sub run {
         return;
     }
 
+    # 時代に関する情報の取得
+    if ( $options->{path} eq 'period' ) {
+        print encode_json $self->period->run($options);
+        print "\n";
+        return;
+    }
+    if ( $options->{path} eq 'periodtype' ) {
+        print encode_json $self->periodtype->run($options);
+        print "\n";
+        return;
+    }
+
     # 検索 search
     # 追加、更新
     return $self->error->output(
