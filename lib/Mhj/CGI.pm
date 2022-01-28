@@ -36,17 +36,25 @@ sub run {
 
     # Resource types
     my $q = CGI->new;
-    warn Dumper($q);
-    my $origin = $ENV{HTTP_ORIGIN};
+
+
     print $q->header(
         -type                             => 'application/json',
         -charset                          => 'utf-8',
-        -access_control_allow_origin      => $origin,
-        -access_control_allow_headers     => 'content-type,X-Requested-With',
-        -access_control_allow_methods     => 'GET,POST,OPTIONS',
-        -access_control_allow_credentials => 'true',
     );
-    warn '-------1';
+
+
+    # warn Dumper($q);
+    # my $origin = $ENV{HTTP_ORIGIN};
+    # print $q->header(
+    #     -type                             => 'application/json',
+    #     -charset                          => 'utf-8',
+    #     -access_control_allow_origin      => $origin,
+    #     -access_control_allow_headers     => 'content-type,X-Requested-With',
+    #     -access_control_allow_methods     => 'GET,POST,OPTIONS',
+    #     -access_control_allow_credentials => 'true',
+    # );
+    # warn '-------1';
 
     # my $params   = {};
     # my $postdata = $q->param('POSTDATA');
