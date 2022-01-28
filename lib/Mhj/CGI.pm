@@ -8,12 +8,34 @@ use Data::Dumper;
 use CGI;
 use JSON::PP;
 
+sub hello {
+    my $html = <<"END_HTML";
+Content-Type: text/html; charset=utf-8
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>hello</title>
+</head>
+
+<body>
+    <h1>hello</h1>
+</body>
+
+</html>
+END_HTML
+
+    print $html;
+}
+
 sub run {
     my ( $self, @args ) = @_;
     my $apikey = 'becom';
 
     # Resource types
-    my $q      = CGI->new;
+    my $q = CGI->new;
     warn Dumper($q);
     my $origin = $ENV{HTTP_ORIGIN};
     print $q->header(
@@ -25,6 +47,7 @@ sub run {
         -access_control_allow_credentials => 'true',
     );
     warn '-------1';
+
     # my $params   = {};
     # my $postdata = $q->param('POSTDATA');
     # if ($postdata) {
