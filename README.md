@@ -25,6 +25,12 @@ python3 -m http.server 8000 --cgi
 <http://localhost:8000/cgi-bin/index.cgi>
 ```
 
+## Test
+
+```zsh
+prove -v
+```
+
 ## API
 
 `apikey` は管理者から取得
@@ -47,7 +53,7 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 CLI
 
 ```zsh
-mhj --path=build --method=init
+mhj --path=build --method=init --params='{"apikey":"becom"}'
 ```
 
 ### Chronology list
