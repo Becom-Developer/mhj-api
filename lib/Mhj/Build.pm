@@ -12,14 +12,13 @@ sub run {
     return $self->error->commit("No arguments") if !$options;
 
     # 初期設定時のdbファイル準備
-    return $self->_init($options) if $options->{method} eq 'init';
+    return $self->_init() if $options->{method} eq 'init';
     return $self->error->commit(
         "Method not specified correctly: $options->{method}");
 }
 
 sub _init {
     my ( $self, @args ) = @_;
-    my $options = shift @args;
     my $db_file = $self->db_file;
     my $db_dir  = File::Spec->catfile( "$FindBin::RealBin", '..', 'db' );
     my $db  = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', $db_file );

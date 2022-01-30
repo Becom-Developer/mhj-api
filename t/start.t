@@ -131,4 +131,79 @@ subtest 'PeriodType' => sub {
     ok( !%{$delete}, 'delete' );
 };
 
+subtest 'Period' => sub {
+    my $build = new_ok('Mhj::Build');
+    $build->run( { method => 'init' } );
+    my $period    = new_ok('Mhj::Period');
+    my $error_msg = $period->run();
+    my @keys      = keys %{$error_msg};
+    my $key       = shift @keys;
+    ok( $key eq 'error', 'error message' );
+
+    my $periodtype = new_ok('Mhj::PeriodType');
+    my $pt_insert  = $periodtype->run(
+        +{
+            path   => "periodtype",
+            method => "insert",
+            params => +{ title => '日本の歴史', }
+        }
+    );
+    my $insert_q = +{
+        path   => "period",
+        method => "insert",
+        params => +{
+            period_type_id => $pt_insert->{id},
+            title          => "江戸時代",
+            start_year     => "1603",
+            end_year       => "1868",
+            start_ts       => "1603-03-24 00:00:00",
+            end_ts         => "1868-10-23 00:00:00"
+        }
+    };
+    my $insert   = $period->run($insert_q);
+    my $q_params = $insert_q->{params};
+
+    for my $key ( keys %{ $insert_q->{params} } ) {
+        ok( $insert->{$key} eq $q_params->{$key}, "insert: $key" );
+    }
+    my $list_q = +{
+        path   => "period",
+        method => "list",
+        params => +{ period_type_id => $pt_insert->{id} }
+    };
+    my $list = $period->run($list_q);
+    for my $key ( keys %{ $list->{period_type} } ) {
+        ok( $list->{period_type}->{$key} eq $pt_insert->{$key}, "list: $key" );
+    }
+    for my $key ( keys %{ $list->{period}->[0] } ) {
+        ok( $list->{period}->[0]->{$key} eq $insert->{$key}, "list: $key" );
+    }
+
+    my $update_q = +{
+        path   => "period",
+        method => "update",
+        params => +{
+            id             => $insert->{id},
+            period_type_id => $insert->{period_type_id},
+            title          => "江戸の時代",
+            start_year     => $insert->{start_year},
+            end_year       => $insert->{end_year},
+            start_ts       => $insert->{start_ts},
+            end_ts         => $insert->{end_ts},
+        }
+    };
+    my $update    = $period->run($update_q);
+    my $uq_params = $update_q->{params};
+    for my $key ( keys %{ $update_q->{params} } ) {
+        ok( $update->{$key} eq $uq_params->{$key}, "update: $key" );
+    }
+    my $delete_q = +{
+        path   => "period",
+        method => "delete",
+        params => +{ id => $insert->{id}, }
+    };
+    my $delete = $period->run($delete_q);
+    ok( !%{$delete}, 'delete' );
+};
+
 done_testing;
