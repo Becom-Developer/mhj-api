@@ -5,8 +5,10 @@ use Test::More;
 use Data::Dumper;
 use FindBin;
 use lib ( "$FindBin::RealBin/../lib", "$FindBin::RealBin/../local/lib/perl5" );
+use Test::Trap;
 use Mhj;
 use Mhj::CGI;
+use Mhj::CLI;
 $ENV{"MHJ_MODE"} = 'test';
 
 subtest 'Class and Method' => sub {
@@ -204,6 +206,14 @@ subtest 'Period' => sub {
     };
     my $delete = $period->run($delete_q);
     ok( !%{$delete}, 'delete' );
+};
+
+subtest 'CLI' => sub {
+    my $cli = new_ok('Mhj::CLI');
+    trap { $cli->run() };
+    like( $trap->stdout, qr/error/, $trap->stdout );
+    trap { $cli->run( '--path=build', '--method=init' ) };
+    like( $trap->stdout, qr/success/, $trap->stdout );
 };
 
 done_testing;

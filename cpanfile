@@ -1,2 +1,2 @@
 requires 'DBD::SQLite', '==1.54';
-requires 'Plack', '1.0';
+requires 'Test::Trap', 'v0.3.4';
