@@ -19,9 +19,18 @@ sub periodtype { Mhj::PeriodType->new; }
 sub error      { Mhj::Error->new; }
 sub time_stamp { return localtime->datetime( 'T' => ' ' ); }
 
+sub db_file {
+    my $db_file = 'mhj.db';
+    if ( $ENV{"MHJ_MODE"} && ( $ENV{"MHJ_MODE"} eq 'test' ) ) {
+        $db_file = 'mhj-test.db';
+    }
+    return $db_file;
+}
+
 sub build_dbh {
     my ( $self, @args ) = @_;
-    my $db   = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', 'mhj.db' );
+    my $db_file = $self->db_file;
+    my $db   = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', $db_file );
     my $attr = +{
         RaiseError     => 1,
         AutoCommit     => 1,

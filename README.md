@@ -11,18 +11,23 @@ perl5.14.4
 cd ~/github/mhj-api
 echo '5.14.4' > .perl-version;
 echo "requires 'DBD::SQLite', '==1.54';" >> cpanfile;
+echo "requires 'Test::Trap', 'v0.3.4';" >> cpanfile;
 
 plenv install 5.14.4
 plenv rehash
 plenv install-cpanm
 cpanm Perl::Tidy
-cpanm Plack
-cpanm Task::Plack
 cpanm -l ~/github/mhj-api/local --installdeps .
 
 ローカル環境でwebサーバー経由で起動
 python3 -m http.server 8000 --cgi
 <http://localhost:8000/cgi-bin/index.cgi>
+```
+
+## Test
+
+```zsh
+prove -v
 ```
 
 ## API

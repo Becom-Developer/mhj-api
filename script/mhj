@@ -5,4 +5,4 @@ use utf8;
 use FindBin;
 use lib ( "$FindBin::RealBin/../lib", "$FindBin::RealBin/../local/lib/perl5" );
 use Mhj::CLI;
-Mhj::CLI->new->run;
+Mhj::CLI->new->run(@ARGV);
