@@ -20,16 +20,8 @@ sub run {
 sub _init {
     my ( $self, @args ) = @_;
     my $options = shift @args;
-
-    # 本番実行時は権限ありのapikey必須, test時のファイル使い分け
-    my $db_file = 'mhj-test.db';
-    if (   exists $options->{params}
-        && exists $options->{params}->{apikey}
-        && ( $options->{params}->{apikey} eq 'becom' ) )
-    {
-        $db_file = 'mhj.db';
-    }
-    my $db_dir = File::Spec->catfile( "$FindBin::RealBin", '..', 'db' );
+    my $db_file = $self->db_file;
+    my $db_dir  = File::Spec->catfile( "$FindBin::RealBin", '..', 'db' );
     my $db  = File::Spec->catfile( "$FindBin::RealBin", '..', 'db', $db_file );
     my $sql = File::Spec->catfile( "$FindBin::RealBin", '..', 'mhj.sql' );
     die "not file: $!: $sql" if !-e $sql;

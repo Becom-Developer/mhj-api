@@ -53,7 +53,7 @@ curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
 CLI
 
 ```zsh
-mhj --path=build --method=init --params='{"apikey":"becom"}'
+mhj --path=build --method=init
 ```
 
 ### Chronology list

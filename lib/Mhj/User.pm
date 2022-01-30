@@ -8,6 +8,7 @@ use Data::Dumper;
 sub run {
     my ( $self, @args ) = @_;
     my $options = shift @args;
+    return $self->error->commit("No arguments") if !$options;
     return $self->_get($options)    if $options->{method} eq 'get';
     return $self->_insert($options) if $options->{method} eq 'insert';
     return $self->_update($options) if $options->{method} eq 'update';
