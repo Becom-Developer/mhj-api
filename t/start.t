@@ -86,4 +86,49 @@ subtest 'User' => sub {
     ok( !%{$delete}, 'delete' );
 };
 
+subtest 'PeriodType' => sub {
+    my $build = new_ok('Mhj::Build');
+    $build->run( { method => 'init' } );
+    my $periodtype = new_ok('Mhj::PeriodType');
+    my $error_msg  = $periodtype->run();
+    my @keys       = keys %{$error_msg};
+    my $key        = shift @keys;
+    ok( $key eq 'error', 'error message' );
+
+    my $insert_q = +{
+        path   => "periodtype",
+        method => "insert",
+        params => +{ title => '日本の歴史', }
+    };
+    my $insert = $periodtype->run($insert_q);
+    ok( $insert->{title} eq $insert_q->{params}->{title}, 'insert' );
+
+    my $list_q = +{
+        path   => "periodtype",
+        method => "list",
+        params => +{}
+    };
+    my $list = $periodtype->run($list_q);
+    ok( $list->{period_type}->[0]->{title} eq $insert->{title}, 'list' );
+
+    my $update_q = +{
+        path   => "periodtype",
+        method => "update",
+        params => +{
+            id    => $insert->{id},
+            title => '日本の歴史と社会歴史',
+        }
+    };
+    my $update = $periodtype->run($update_q);
+    ok( $update->{title} eq $update_q->{params}->{title}, 'update' );
+
+    my $delete_q = +{
+        path   => "periodtype",
+        method => "delete",
+        params => +{ id => $insert->{id}, }
+    };
+    my $delete = $periodtype->run($delete_q);
+    ok( !%{$delete}, 'delete' );
+};
+
 done_testing;
