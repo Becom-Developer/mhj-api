@@ -45,6 +45,49 @@ CLI
 mhj --path=user --method=get --params='{}'
 ```
 
+## User list
+
+登録ユーザーの一覧を取得
+
+Request parameters
+
+```json
+{}
+```
+
+Response parameters
+
+```json
+[
+  {
+    "id": 1,
+    "loginid": "info@becom.co.jp",
+    "password": "info",
+    "approved": 1,
+    "deleted": 0,
+    "created_ts": "2022-01-24 00:46:47",
+    "modified_ts": "2022-01-24 00:46:47"
+  }
+]
+```
+
+HTTP
+
+```zsh
+curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+--verbose \
+--request POST \
+--header 'Content-Type: application/json' \
+--header 'accept: application/json' \
+--data-binary '{"path":"user","method":"list","apikey":"becom","params":{}}'
+```
+
+CLI
+
+```zsh
+mhj --path=user --method=list --params='{}'
+```
+
 ## User insert
 
 登録ユーザーの新規作成

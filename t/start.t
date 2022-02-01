@@ -23,7 +23,7 @@ subtest 'Class and Method' => sub {
     can_ok( new_ok('Mhj::PeriodType'),
         ( qw{run _delete _update _insert _list}, @methods ) );
     can_ok( new_ok('Mhj::User'),
-        ( qw{run _delete _update _insert _get}, @methods ) );
+        ( qw{run _delete _update _insert _get _list}, @methods ) );
 };
 
 subtest 'Build' => sub {
@@ -65,6 +65,16 @@ subtest 'User' => sub {
     my $get = $user->run($get_q);
     ok( $get->{loginid} eq $insert->{loginid},   'get' );
     ok( $get->{password} eq $insert->{password}, 'get' );
+
+    my $list_q = +{
+        path   => "user",
+        method => "list",
+        params => +{}
+    };
+    my $list = $user->run($list_q);
+    warn Dumper($list);
+    ok( $list->[0]->{loginid} eq $get->{loginid},   'list' );
+    ok( $list->[0]->{password} eq $get->{password}, 'list' );
 
     my $update_q = +{
         path   => "user",

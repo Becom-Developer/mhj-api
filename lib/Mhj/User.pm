@@ -9,12 +9,22 @@ sub run {
     my ( $self, @args ) = @_;
     my $options = shift @args;
     return $self->error->commit("No arguments") if !$options;
-    return $self->_get($options)    if $options->{method} eq 'get';
+    return $self->_get($options)                if $options->{method} eq 'get';
     return $self->_insert($options) if $options->{method} eq 'insert';
     return $self->_update($options) if $options->{method} eq 'update';
     return $self->_delete($options) if $options->{method} eq 'delete';
+    return $self->_list($options)   if $options->{method} eq 'list';
     return $self->error->commit(
         "Method not specified correctly: $options->{method}");
+}
+
+sub _list {
+    my ( $self, @args ) = @_;
+    my $options = shift @args;
+    my $table   = 'user';
+    my $rows    = $self->rows( $table, [], {} );
+    return $self->error->commit("not exist $table: ") if @{$rows} eq 0;
+    return $rows;
 }
 
 sub _delete {
