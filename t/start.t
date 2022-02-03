@@ -121,7 +121,7 @@ subtest 'PeriodType' => sub {
         params => +{}
     };
     my $list = $periodtype->run($list_q);
-    ok( $list->{period_type}->[0]->{title} eq $insert->{title}, 'list' );
+    ok( $list->[0]->{title} eq $insert->{title}, 'list' );
 
     my $update_q = +{
         path   => "periodtype",
