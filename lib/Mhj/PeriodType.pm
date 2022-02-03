@@ -9,7 +9,7 @@ sub run {
     my ( $self, @args ) = @_;
     my $options = shift @args;
     return $self->error->commit("No arguments") if !$options;
-    return $self->_list($options)   if $options->{method} eq 'list';
+    return $self->_list($options)               if $options->{method} eq 'list';
     return $self->_insert($options) if $options->{method} eq 'insert';
     return $self->_update($options) if $options->{method} eq 'update';
     return $self->_delete($options) if $options->{method} eq 'delete';
@@ -39,7 +39,7 @@ sub _list {
     my $options = shift @args;
     my $rows    = $self->rows( 'period_type', [], {} );
     return $self->error->commit("not exist period_type: ") if @{$rows} eq 0;
-    return { period_type => $rows };
+    return $rows;
 }
 
 sub _update {

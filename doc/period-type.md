@@ -15,17 +15,15 @@ Request parameters
 Response parameters
 
 ```json
-{
-  "period_type": [
-    {
-      "id": 5,
-      "title": "日本の歴史",
-      "deleted": 0,
-      "created_ts": "2022-01-23 23:49:12",
-      "modified_ts": "2022-01-23 23:49:12"
-    }
-  ]
-}
+[
+  {
+    "id": 5,
+    "title": "日本の歴史",
+    "deleted": 0,
+    "created_ts": "2022-01-23 23:49:12",
+    "modified_ts": "2022-01-23 23:49:12"
+  }
+]
 ```
 
 HTTP
