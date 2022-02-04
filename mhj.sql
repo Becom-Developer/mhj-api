@@ -39,17 +39,17 @@ CREATE TABLE chronology_to_period (                     -- 年表と時代の結
     modified_ts     TEXT                                -- 修正日時 (例: '2022-01-27 23:09:10')
 );
 DROP TABLE IF EXISTS `period`;
-CREATE TABLE `period` (                                 -- 時代
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,  -- ID (例: 5)
-    period_type_id  INTEGER,                            -- 時代の種別ID (例: 5)
-    title           TEXT,                               -- タイトル (例: '江戸時代')
-    start_year      TEXT,                               -- 開始年 (例: '1603')
-    end_year        TEXT,                               -- 終了年 (例: '1868')
-    start_ts        TEXT,                               -- 開始日時 (例: '1603-03-24 00:00:00')
-    end_ts          TEXT,                               -- 終了日時 (例: '1868-10-23 00:00:00')
-    deleted         INTEGER,                            -- 削除フラグ (例: 0: 削除していない, 1: 削除済み)
-    created_ts      TEXT,                               -- 登録日時 (例: '2022-01-23 23:49:12')
-    modified_ts     TEXT                                -- 修正日時 (例: '2022-01-23 23:49:12')
+CREATE TABLE `period` (                                     -- 時代
+    `id`                INTEGER PRIMARY KEY AUTOINCREMENT,  -- ID (例: 5)
+    `period_type_id`    INTEGER,                            -- 時代の種別ID (例: 5)
+    `title`             TEXT,                               -- タイトル (例: '江戸時代')
+    `start_year`        TEXT,                               -- 開始年 (例: '1603')
+    `end_year`          TEXT,                               -- 終了年 (例: '1868')
+    `start_date`        TEXT,                               -- 開始日時 (例: '1603-03-24')
+    `end_date`          TEXT,                               -- 終了日時 (例: '1868-10-23')
+    `deleted`           INTEGER,                            -- 削除フラグ (例: 0: 削除していない, 1: 削除済み)
+    `created_ts`        TEXT,                               -- 登録日時 (例: '2022-01-23 23:49:12')
+    `modified_ts`       TEXT                                -- 修正日時 (例: '2022-01-23 23:49:12')
 );
 DROP TABLE IF EXISTS period_type;
 CREATE TABLE period_type (                              -- 時代の種別

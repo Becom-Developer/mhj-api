@@ -32,8 +32,8 @@ Response parameters
       "title": "江戸時代",
       "start_year": "1603",
       "end_year": "1868",
-      "start_ts": "1603-03-24 00:00:00",
-      "end_ts": "1868-10-23 00:00:00",
+      "start_date": "1603-03-24",
+      "end_date": "1868-10-23",
       "deleted": 0,
       "created_ts": "2022-01-23 23:49:12",
       "modified_ts": "2022-01-23 23:49:12"
@@ -71,8 +71,8 @@ Request parameters
   "title": "江戸時代",
   "start_year": "1603",
   "end_year": "1868",
-  "start_ts": "1603-03-24 00:00:00",
-  "end_ts": "1868-10-23 00:00:00"
+  "start_date": "1603-03-24",
+  "end_date": "1868-10-23"
 }
 ```
 
@@ -85,8 +85,8 @@ Response parameters
   "title": "江戸時代",
   "start_year": "1603",
   "end_year": "1868",
-  "start_ts": "1603-03-24 00:00:00",
-  "end_ts": "1868-10-23 00:00:00",
+  "start_date": "1603-03-24",
+  "end_date": "1868-10-23",
   "deleted": 0,
   "created_ts": "2022-01-23 23:49:12",
   "modified_ts": "2022-01-23 23:49:12"
@@ -123,8 +123,8 @@ Request parameters
   "title": "江戸の時代",
   "start_year": "1603",
   "end_year": "1868",
-  "start_ts": "1603-03-24 00:00:00",
-  "end_ts": "1868-10-23 00:00:00"
+  "start_date": "1603-03-24",
+  "end_date": "1868-10-23"
 }
 ```
 
@@ -137,8 +137,8 @@ Response parameters
   "title": "江戸の時代",
   "start_year": "1603",
   "end_year": "1868",
-  "start_ts": "1603-03-24 00:00:00",
-  "end_ts": "1868-10-23 00:00:00",
+  "start_date": "1603-03-24",
+  "end_date": "1868-10-23",
   "deleted": 0,
   "created_ts": "2022-01-23 23:49:12",
   "modified_ts": "2022-01-23 23:49:12"
