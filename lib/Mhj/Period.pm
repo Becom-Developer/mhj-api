@@ -9,7 +9,7 @@ sub run {
     my ( $self, @args ) = @_;
     my $options = shift @args;
     return $self->error->commit("No arguments") if !$options;
-    return $self->_list($options)   if $options->{method} eq 'list';
+    return $self->_list($options)               if $options->{method} eq 'list';
     return $self->_insert($options) if $options->{method} eq 'insert';
     return $self->_update($options) if $options->{method} eq 'update';
     return $self->_delete($options) if $options->{method} eq 'delete';
@@ -44,7 +44,7 @@ sub _update {
     return $self->error->commit("not exist $table id: $params->{id}") if !$row;
     my $set_cols = [
         'period_type_id', 'title', 'start_year', 'end_year',
-        'start_ts',       'end_ts'
+        'start_date',     'end_date'
     ];
     my $where_cols = ['id'];
     my $set_q      = [];
@@ -79,12 +79,12 @@ sub _insert {
     return $self->error->commit("exist $table: $params->{title}") if $row;
     my $dbh = $self->build_dbh;
     my $col =
-q{period_type_id, title, start_year, end_year, start_ts, end_ts, deleted, created_ts, modified_ts};
+q{period_type_id, title, start_year, end_year, start_date, end_date, deleted, created_ts, modified_ts};
     my $values = q{?, ?, ?, ?, ?, ?, ?, ?, ?};
     my @data   = (
         $params->{period_type_id}, $params->{title},
         $params->{start_year},     $params->{end_year},
-        $params->{start_ts},       $params->{end_ts},
+        $params->{start_date},     $params->{end_date},
         0,                         $dt,
         $dt
     );
