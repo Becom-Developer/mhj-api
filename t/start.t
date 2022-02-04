@@ -22,6 +22,8 @@ subtest 'Class and Method' => sub {
         ( qw{run _delete _update _insert _list}, @methods ) );
     can_ok( new_ok('Mhj::PeriodType'),
         ( qw{run _delete _update _insert _list}, @methods ) );
+    can_ok( new_ok('Mhj::Chronology'),
+        ( qw{run _delete _update _insert _list}, @methods ) );
     can_ok( new_ok('Mhj::User'),
         ( qw{run _delete _update _insert _get _list}, @methods ) );
 };
@@ -215,6 +217,60 @@ subtest 'Period' => sub {
         params => +{ id => $insert->{id}, }
     };
     my $delete = $period->run($delete_q);
+    ok( !%{$delete}, 'delete' );
+};
+
+subtest 'Chronology' => sub {
+    my $build = new_ok('Mhj::Build');
+    $build->run( { method => 'init' } );
+    my $chronology = new_ok('Mhj::Chronology');
+    my $error_msg  = $chronology->run();
+    my @keys       = keys %{$error_msg};
+    my $key        = shift @keys;
+    ok( $key eq 'error', 'error message' );
+    my $insert_q = +{
+        path   => "chronology",
+        method => "insert",
+        params => +{
+            title  => '東京オリンピック',
+            adyear => "2021",
+            jayear => "令和3",
+        }
+    };
+    my $q_params = $insert_q->{params};
+    my $insert   = $chronology->run($insert_q);
+
+    for my $key ( keys %{ $insert_q->{params} } ) {
+        ok( $insert->{$key} eq $q_params->{$key}, "insert: $key" );
+    }
+    my $list_q = +{
+        path   => "chronology",
+        method => "list",
+        params => +{}
+    };
+    my $list = $chronology->run($list_q);
+    ok( $list->[0]->{title} eq $insert->{title}, 'list' );
+    my $update_q = +{
+        path   => "chronology",
+        method => "update",
+        params => +{
+            id     => $insert->{id},
+            title  => '東京のオリンピック',
+            adyear => "2021",
+            jayear => "令和3",
+        }
+    };
+    my $update    = $chronology->run($update_q);
+    my $uq_params = $update_q->{params};
+    for my $key ( keys %{ $update_q->{params} } ) {
+        ok( $update->{$key} eq $uq_params->{$key}, "update: $key" );
+    }
+    my $delete_q = +{
+        path   => "chronology",
+        method => "delete",
+        params => +{ id => $insert->{id}, }
+    };
+    my $delete = $chronology->run($delete_q);
     ok( !%{$delete}, 'delete' );
 };
 

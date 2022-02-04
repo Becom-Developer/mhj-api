@@ -50,6 +50,11 @@ sub run {
         print "\n";
         return;
     }
+    if ( $options->{path} eq 'chronology' ) {
+        print encode_json $self->chronology->run($options);
+        print "\n";
+        return;
+    }
 
     # 検索 search
     # 追加、更新
