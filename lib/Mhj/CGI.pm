@@ -63,6 +63,11 @@ sub run {
         print "\n";
         return;
     }
+    if ( $params->{path} eq 'chronology' ) {
+        print encode_json $self->chronology->run($params);
+        print "\n";
+        return;
+    }
     return $self->error->output(
         "The path is specified incorrectly: $params->{path}");
 }

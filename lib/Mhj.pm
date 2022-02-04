@@ -10,12 +10,14 @@ use Mhj::Build;
 use Mhj::User;
 use Mhj::Period;
 use Mhj::PeriodType;
+use Mhj::Chronology;
 use Mhj::Error;
 sub new        { return bless {}, shift; }
 sub build      { Mhj::Build->new; }
 sub user       { Mhj::User->new; }
 sub period     { Mhj::Period->new; }
 sub periodtype { Mhj::PeriodType->new; }
+sub chronology { Mhj::Chronology->new; }
 sub error      { Mhj::Error->new; }
 sub time_stamp { return localtime->datetime( 'T' => ' ' ); }
 

@@ -11,8 +11,7 @@ CREATE TABLE user (                                     -- ユーザー
 DROP TABLE IF EXISTS chronology;
 CREATE TABLE chronology (                               -- 年表
     id              INTEGER PRIMARY KEY AUTOINCREMENT,  -- ID (例: 5)
-    period_id       INTEGER,                            -- 時代のID (例: 5)
-    titile          TEXT,                               -- タイトル (例: '東京オリンピック')
+    title           TEXT,                               -- タイトル (例: '東京オリンピック')
     adyear          TEXT,                               -- 西暦表示 (例: '2021')
     jayear          TEXT,                               -- 和暦表示 (例: '令和3')
     deleted         INTEGER,                            -- 削除フラグ (例: 0: 削除していない, 1: 削除済み)
