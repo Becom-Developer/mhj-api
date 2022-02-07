@@ -24,6 +24,8 @@ subtest 'Class and Method' => sub {
         ( qw{run _delete _update _insert _list}, @methods ) );
     can_ok( new_ok('Mhj::Chronology'),
         ( qw{run _delete _update _insert _list}, @methods ) );
+    can_ok( new_ok('Mhj::HistoryDetails'),
+        ( qw{run _delete _update _insert _list}, @methods ) );
     can_ok( new_ok('Mhj::User'),
         ( qw{run _delete _update _insert _get _list}, @methods ) );
 };
@@ -272,6 +274,85 @@ subtest 'Chronology' => sub {
     };
     my $delete = $chronology->run($delete_q);
     ok( !%{$delete}, 'delete' );
+};
+
+subtest 'HistoryDetails' => sub {
+    my $build = new_ok('Mhj::Build');
+    $build->run( { method => 'init' } );
+    my $historydetails = new_ok('Mhj::HistoryDetails');
+    my $error_msg      = $historydetails->run();
+    my @keys           = keys %{$error_msg};
+    my $key            = shift @keys;
+    ok( $key eq 'error', 'error message' );
+
+    my $chronology = new_ok('Mhj::Chronology');
+    my $c_insert   = $chronology->run(
+        +{
+            path   => "chronology",
+            method => "insert",
+            params => +{
+                title  => '東京オリンピック',
+                adyear => "2021",
+                jayear => "令和3",
+            }
+        }
+    );
+    my $insert_q = +{
+        path   => "historydetails",
+        method => "insert",
+        params => +{
+            chronology_id => $c_insert->{id},
+            contents      => "新型コロナの影響につき無観客開催",
+            adyear_ts     => "2021-01-23 00:00:00"
+        }
+    };
+    my $insert   = $historydetails->run($insert_q);
+    my $q_params = $insert_q->{params};
+
+    for my $key ( keys %{ $insert_q->{params} } ) {
+        ok( $insert->{$key} eq $q_params->{$key}, "insert: $key" );
+    }
+
+    my $list_q = +{
+        path   => "historydetails",
+        method => "list",
+        params => +{ chronology_id => $c_insert->{id} }
+    };
+    my $list = $historydetails->run($list_q);
+    for my $key ( keys %{ $list->{chronology} } ) {
+        ok( $list->{chronology}->{$key} eq $c_insert->{$key}, "list: $key" );
+    }
+    for my $key ( keys %{ $list->{history_details}->[0] } ) {
+        ok( $list->{history_details}->[0]->{$key} eq $insert->{$key},
+            "list: $key" );
+    }
+
+    my $update_q = +{
+        path   => "historydetails",
+        method => "update",
+        params => +{
+            id            => $insert->{id},
+            chronology_id => $insert->{chronology_id},
+            contents      => "新型コロナの影響につき無観客開催やった",
+            adyear_ts     => $insert->{adyear_ts},
+        }
+    };
+    my $update    = $historydetails->run($update_q);
+    my $uq_params = $update_q->{params};
+    for my $key ( keys %{ $update_q->{params} } ) {
+        ok( $update->{$key} eq $uq_params->{$key}, "update: $key" );
+    }
+    my $delete_q = +{
+        path   => "historydetails",
+        method => "delete",
+        params => +{ id => $insert->{id}, }
+    };
+    my $delete = $historydetails->run($delete_q);
+    ok( !%{$delete}, 'delete' );
+    my $table = 'history_details';
+    my $row =
+      $historydetails->single( $table, ['id'], { id => $insert->{id} } );
+    ok( !$row, 'db search' );
 };
 
 subtest 'CLI' => sub {
