@@ -76,7 +76,6 @@ subtest 'User' => sub {
         params => +{}
     };
     my $list = $user->run($list_q);
-    warn Dumper($list);
     ok( $list->[0]->{loginid} eq $get->{loginid},   'list' );
     ok( $list->[0]->{password} eq $get->{password}, 'list' );
 

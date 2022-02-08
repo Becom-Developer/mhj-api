@@ -68,6 +68,11 @@ sub run {
         print "\n";
         return;
     }
+    if ( $params->{path} eq 'historydetails' ) {
+        print encode_json $self->historydetails->run($params);
+        print "\n";
+        return;
+    }
     return $self->error->output(
         "The path is specified incorrectly: $params->{path}");
 }
