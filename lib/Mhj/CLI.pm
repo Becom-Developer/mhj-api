@@ -55,6 +55,11 @@ sub run {
         print "\n";
         return;
     }
+    if ( $options->{path} eq 'historydetails' ) {
+        print encode_json $self->historydetails->run($options);
+        print "\n";
+        return;
+    }
 
     # 検索 search
     # 追加、更新
