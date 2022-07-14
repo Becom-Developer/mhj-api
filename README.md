@@ -61,9 +61,9 @@ git fetch && git checkout main && git pull
 ### CLI
 
 ```text
-mhj <resource> <method> [--params=<JSON>]
+mhj <path> <method> [--params=<JSON>]
 
-  <resource>  Specify each resource name
+  <path>      Specify each resource name
   <method>    Specify each method name
   --params    Json format with reference to request parameters
 
@@ -143,7 +143,7 @@ prove -v
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -212,7 +212,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -257,7 +257,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -303,7 +303,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -338,7 +338,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \

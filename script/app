@@ -20,9 +20,9 @@ any '/' => sub ($c) {
 
     # $c->app->log->debug( $c->app->dumper( $c->res->headers ) );
     # Validate
-    if ( !$opt->{resource} || !$opt->{method} || !$opt->{apikey} ) {
+    if ( !$opt->{path} || !$opt->{method} || !$opt->{apikey} ) {
         my $msg = $mhj->error->commit(
-            "Unknown option specification: resource, method, apikey");
+            "Unknown option specification: path, method, apikey");
         $c->render( json => $msg );
         return;
     }
