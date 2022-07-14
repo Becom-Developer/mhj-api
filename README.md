@@ -4,6 +4,104 @@
 
 ## Setup
 
+事前に`plenv`を使えるようにしておき指定バージョンの`Perl`を使えるように
+
+git clone にてソースコードを配置後プロジェクト配下にてモジュールをインストール
+
+```zsh
+./cpanm -l ./local --installdeps .
+```
+
+## Work
+
+ローカル開発時の起動方法など
+
+app サーバー起動の場合
+
+```zsh
+perl -I ./local/lib/perl5 ./local/bin/morbo -l "http://*:3020" ./script/app
+```
+
+リクエスト
+
+```zsh
+curl 'http://localhost:3020/'
+```
+
+cgi ファイルを起動の場合
+
+```zsh
+python3 -m http.server 3020 --cgi
+```
+
+リクエスト
+
+```zsh
+curl 'http://localhost:3020/cgi-bin/index.cgi'
+```
+
+コマンドラインによる起動
+
+```zsh
+./script/mhj
+```
+
+詳細は[doc/](doc/)を参照
+
+公開環境へ公開
+
+```sh
+ssh becom2022@becom2022.sakura.ne.jp
+cd ~/www/mhj-api
+git fetch && git checkout main && git pull
+```
+
+## Usage
+
+### CLI
+
+```text
+mhj <resource> <method> [--params=<JSON>]
+
+  <resource>  Specify each resource name
+  <method>    Specify each method name
+  --params    Json format with reference to request parameters
+
+Specify the resource name as the first argument
+Specify the method name as the second argument
+Format command line interface options in json format
+
+第一引数はリソース名を指定
+第二引数はメソッド名を指定
+コマンドラインインターフェスのオプションはjson形式で整形してください
+```
+
+### HTTP
+
+```text
+POST https://mhj-api.becom.co.jp/
+
+http request requires apikey
+All specifications should be included in the post request parameters
+See Examples in each document for usage
+
+http リクエストには apikey の指定が必要
+全ての指定は post リクエストのパラメーターに含めてください
+使用法は各ドキュメントの Example を参照
+```
+
+## Memo
+
+sqlite-simple についてはしばらくはダウンロード対応
+
+```zsh
+cp ~/Downloads/SQLite-Simple-main/lib/SQLite/Simple.pm ~/github/zsearch-api/lib/SQLite
+```
+
+### Environment
+
+初動時の環境構築に関するメモ
+
 ```text
 DBD::SQLite-1.54
 perl5.14.4
@@ -18,10 +116,14 @@ plenv rehash
 plenv install-cpanm
 cpanm Perl::Tidy
 cpanm -l ~/github/mhj-api/local --installdeps .
+```
 
-ローカル環境でwebサーバー経由で起動
-python3 -m http.server 8000 --cgi
-<http://localhost:8000/cgi-bin/index.cgi>
+Module
+
+```zsh
+curl -L https://cpanmin.us/ -o cpanm
+chmod +x cpanm
+./cpanm -l ./local --installdeps .
 ```
 
 ## Test
