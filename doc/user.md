@@ -31,7 +31,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -74,7 +74,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -118,7 +118,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -163,7 +163,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
@@ -198,7 +198,7 @@ Response parameters
 HTTP
 
 ```zsh
-curl 'https://mhj-api.becom.co.jp/mhj.cgi' \
+curl 'https://mhj-api.becom.co.jp/' \
 --verbose \
 --request POST \
 --header 'Content-Type: application/json' \
